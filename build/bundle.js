@@ -23035,6 +23035,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = require('react-redux');
+
 var _Pillow = require('./Pillow');
 
 var _Pillow2 = _interopRequireDefault(_Pillow);
@@ -23060,16 +23062,36 @@ var style = function style(_ref) {
 };
 
 var Board = function Board(props) {
+  var line = props.line,
+      column = props.column,
+      directions = props.directions,
+      character = props.character;
+
+
   return _react2.default.createElement(
     'div',
     { style: style(props) },
-    _react2.default.createElement(_Pillow2.default, { tileSize: tileSize })
+    _react2.default.createElement(_Pillow2.default, {
+      line: line,
+      column: column,
+      directions: directions,
+      character: character,
+      tileSize: tileSize })
   );
 };
 
-exports.default = Board;
+exports.default = (0, _reactRedux.connect)(function (_ref2) {
+  var _ref2$pillow = _ref2.pillow,
+      line = _ref2$pillow.line,
+      column = _ref2$pillow.column,
+      directions = _ref2$pillow.directions,
+      character = _ref2.character;
+  return {
+    line: line, column: column, directions: directions, character: character
+  };
+})(Board);
 
-},{"../config":220,"./Pillow":218,"react":205}],217:[function(require,module,exports){
+},{"../config":220,"./Pillow":218,"react":205,"react-redux":175}],217:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23155,8 +23177,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = require('react-redux');
-
 var _PillowTile = require('./PillowTile');
 
 var _PillowTile2 = _interopRequireDefault(_PillowTile);
@@ -23172,7 +23192,24 @@ var style = function style(_ref) {
     top: tileSize * (line - 1) + 'px',
     left: tileSize * (column - 1) + 'px',
     height: tileSize * 3 + 'px',
-    width: tileSize * 3 + 'px'
+    width: tileSize * 3 + 'px',
+    display: 'flex',
+    flexDirection: 'column',
+    transition: 'top 200ms, left 200ms',
+    borderStyle: 'solid',
+    borderWidth: '8px',
+    borderImage: 'url(./images/border.png) 10 fill repeat',
+    borderRadius: '4px',
+    backgroundImage: 'url(./images/asfalt.png)'
+  };
+};
+
+var lineStyle = function lineStyle(_ref2) {
+  var tileSize = _ref2.tileSize;
+  return {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: '1'
   };
 };
 
@@ -23186,29 +23223,25 @@ var Pillow = function Pillow(props) {
     'div',
     { style: style(props) },
     directions.map(function (line, i) {
-      return line.map(function (direction, j) {
-        return _react2.default.createElement(_PillowTile2.default, {
-          hasCharacter: i === character.line && j === character.column,
-          direction: direction,
-          tileSize: tileSize
-        });
-      });
+      return _react2.default.createElement(
+        'div',
+        { style: lineStyle(props), key: 'line-' + i },
+        line.map(function (direction, j) {
+          return _react2.default.createElement(_PillowTile2.default, {
+            hasCharacter: i === character.line && j === character.column,
+            direction: direction,
+            tileSize: tileSize,
+            key: 'tile-' + i + '-' + j
+          });
+        })
+      );
     })
   );
 };
 
-exports.default = (0, _reactRedux.connect)(function (_ref2) {
-  var _ref2$pillow = _ref2.pillow,
-      line = _ref2$pillow.line,
-      column = _ref2$pillow.column,
-      directions = _ref2$pillow.directions,
-      character = _ref2.character;
-  return {
-    line: line, column: column, directions: directions, character: character
-  };
-})(Pillow);
+exports.default = Pillow;
 
-},{"./PillowTile":219,"react":205,"react-redux":175}],219:[function(require,module,exports){
+},{"./PillowTile":219,"react":205}],219:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23232,11 +23265,10 @@ var style = function style(_ref) {
   var tileSize = _ref.tileSize,
       hasCharacter = _ref.hasCharacter;
   return {
-    color: hasCharacter ? 'red' : 'black',
-    border: '1px solid black',
-    height: tileSize + 'px',
-    width: tileSize + 'px',
-    float: 'left'
+    color: hasCharacter ? 'red' : 'yellow',
+    flex: '1 0 auto',
+    float: 'left',
+    textAlign: 'center'
   };
 };
 
@@ -23261,9 +23293,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  height: 40,
-  width: 40,
-  tileSize: 15
+  height: 18,
+  width: 18,
+  tileSize: 33
 };
 
 },{}],221:[function(require,module,exports){

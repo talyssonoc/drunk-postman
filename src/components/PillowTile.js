@@ -8,11 +8,10 @@ const directions = {
 };
 
 const style = ({ tileSize, hasCharacter }) => ({
-  color: hasCharacter ? 'red' : 'black',
-  border: '1px solid black',
-  height: `${tileSize}px`,
-  width: `${tileSize}px`,
-  float: 'left'
+  color: hasCharacter ? 'red' : 'yellow',
+  flex: '1 0 auto',
+  float: 'left',
+  textAlign: 'center'
 });
 
 const PillowTile = (props) => {

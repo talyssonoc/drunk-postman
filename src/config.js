@@ -1,5 +1,5 @@
 export default {
-  height: 40,
-  width: 40,
-  tileSize: 15
+  height: 18,
+  width: 18,
+  tileSize: 33
 };
