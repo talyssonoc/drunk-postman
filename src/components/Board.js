@@ -15,11 +15,12 @@ const Board = (props) => {
   return (
     <div style={style(props)}>
       <Platform
-        line={line}
+        character={character}
         column={column}
         directions={directions}
-        character={character}
-        tileSize={tileSize}/>
+        line={line}
+        tileSize={tileSize}
+      />
     </div>
   );
 };

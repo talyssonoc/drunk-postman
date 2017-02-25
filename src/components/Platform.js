@@ -9,18 +9,21 @@ const Platform = (props) => {
     <div style={style(props)}>
       {
         directions.map((line, i) =>
-          <div style={lineStyle} key={`line-${i}`}>
+          <div
+            key={`line-${i}`}
+            style={lineStyle}
+          >
             {
               line.map((direction, j) =>
                 <PlatformTile
-                  key={`tile-${i}-${j}`}
+                  character={character}
+                  direction={direction}
                   hasCharacter={
                     i === character.line
                     &&
                     j === character.column
                   }
-                  character={character}
-                  direction={direction}
+                  key={`tile-${i}-${j}`}
                 />
               )
             }

@@ -11,7 +11,7 @@ const store = createStore(reducer);
 
 render(
   <Provider store={store}>
-    <Game {...config}/>
+    <Game {...config} />
   </Provider>,
   document.querySelector('[data-app]')
 );
