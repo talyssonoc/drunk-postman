@@ -6,14 +6,6 @@ import config from '../config';
 
 const { tileSize } = config;
 
-const style = ({ height, width }) => ({
-  border: '1px solid black',
-  position: 'relative',
-  height: `${tileSize * height}px`,
-  width: `${tileSize * width}px`,
-  backgroundImage: 'url(./images/asfalt.png)'
-});
-
 const Board = (props) => {
   const {
     line, column,
@@ -31,6 +23,14 @@ const Board = (props) => {
     </div>
   );
 };
+
+const style = ({ height, width }) => ({
+  border: '1px solid black',
+  position: 'relative',
+  height: `${tileSize * height}px`,
+  width: `${tileSize * width}px`,
+  backgroundImage: 'url(./images/asfalt.png)'
+});
 
 export default connect(
   ({ platform: { line, column, directions }, character }) => ({
