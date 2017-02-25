@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Pillow from './Pillow';
+import Platform from './Platform';
 import config from '../config';
 
 const { tileSize } = config;
@@ -10,7 +10,8 @@ const style = ({ height, width }) => ({
   border: '1px solid black',
   position: 'relative',
   height: `${tileSize * height}px`,
-  width: `${tileSize * width}px`
+  width: `${tileSize * width}px`,
+  backgroundImage: 'url(./images/asfalt.png)'
 });
 
 const Board = (props) => {
@@ -21,7 +22,7 @@ const Board = (props) => {
 
   return (
     <div style={style(props)}>
-      <Pillow
+      <Platform
         line={line}
         column={column}
         directions={directions}
@@ -32,7 +33,7 @@ const Board = (props) => {
 };
 
 export default connect(
-  ({ pillow: { line, column, directions }, character }) => ({
+  ({ platform: { line, column, directions }, character }) => ({
     line, column, directions, character
   })
 )(Board);

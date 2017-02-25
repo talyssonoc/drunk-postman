@@ -14,7 +14,7 @@ const getRandomDirections = () => {
   });
 };
 
-const pillowTransitions = {
+const platformTransitions = {
   up: {
     cond: ({ line }) => line > 1,
     trans: ({ line }) => ({ line: line - 1 })
@@ -33,12 +33,12 @@ const pillowTransitions = {
   }
 };
 
-const pillow = (state, { type, direction }) => {
-  if(type === 'MOVE_PILLOW') {
+const platform = (state, { type, direction }) => {
+  if(type === 'MOVE_PLATFORM') {
     const newState = Object.assign({}, state);
 
-    if(pillowTransitions[direction] && pillowTransitions[direction].cond(state)) {
-      Object.assign(newState, pillowTransitions[direction].trans(state));
+    if(platformTransitions[direction] && platformTransitions[direction].cond(state)) {
+      Object.assign(newState, platformTransitions[direction].trans(state));
     }
 
     newState.directions = getRandomDirections();
@@ -49,10 +49,10 @@ const pillow = (state, { type, direction }) => {
   return state;
 };
 
-pillow.initialState = {
+platform.initialState = {
   line: 1,
   column: 1,
   directions: getRandomDirections()
 };
 
-export default pillow;
+export default platform;

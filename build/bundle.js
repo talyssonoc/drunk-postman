@@ -23037,9 +23037,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
-var _Pillow = require('./Pillow');
+var _Platform = require('./Platform');
 
-var _Pillow2 = _interopRequireDefault(_Pillow);
+var _Platform2 = _interopRequireDefault(_Platform);
 
 var _config = require('../config');
 
@@ -23057,7 +23057,8 @@ var style = function style(_ref) {
     border: '1px solid black',
     position: 'relative',
     height: tileSize * height + 'px',
-    width: tileSize * width + 'px'
+    width: tileSize * width + 'px',
+    backgroundImage: 'url(./images/asfalt.png)'
   };
 };
 
@@ -23071,7 +23072,7 @@ var Board = function Board(props) {
   return _react2.default.createElement(
     'div',
     { style: style(props) },
-    _react2.default.createElement(_Pillow2.default, {
+    _react2.default.createElement(_Platform2.default, {
       line: line,
       column: column,
       directions: directions,
@@ -23081,17 +23082,17 @@ var Board = function Board(props) {
 };
 
 exports.default = (0, _reactRedux.connect)(function (_ref2) {
-  var _ref2$pillow = _ref2.pillow,
-      line = _ref2$pillow.line,
-      column = _ref2$pillow.column,
-      directions = _ref2$pillow.directions,
+  var _ref2$platform = _ref2.platform,
+      line = _ref2$platform.line,
+      column = _ref2$platform.column,
+      directions = _ref2$platform.directions,
       character = _ref2.character;
   return {
     line: line, column: column, directions: directions, character: character
   };
 })(Board);
 
-},{"../config":220,"./Pillow":218,"react":205,"react-redux":175}],217:[function(require,module,exports){
+},{"../config":220,"./Platform":218,"react":205,"react-redux":175}],217:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23177,11 +23178,36 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _PillowTile = require('./PillowTile');
+var _PlatformTile = require('./PlatformTile');
 
-var _PillowTile2 = _interopRequireDefault(_PillowTile);
+var _PlatformTile2 = _interopRequireDefault(_PlatformTile);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Platform = function Platform(props) {
+  var directions = props.directions,
+      character = props.character;
+
+
+  return _react2.default.createElement(
+    'div',
+    { style: style(props) },
+    directions.map(function (line, i) {
+      return _react2.default.createElement(
+        'div',
+        { style: lineStyle, key: 'line-' + i },
+        line.map(function (direction, j) {
+          return _react2.default.createElement(_PlatformTile2.default, {
+            key: 'tile-' + i + '-' + j,
+            hasCharacter: i === character.line && j === character.column,
+            character: character,
+            direction: direction
+          });
+        })
+      );
+    })
+  );
+};
 
 var style = function style(_ref) {
   var tileSize = _ref.tileSize,
@@ -23196,52 +23222,21 @@ var style = function style(_ref) {
     display: 'flex',
     flexDirection: 'column',
     transition: 'top 200ms, left 200ms',
-    borderStyle: 'solid',
-    borderWidth: '8px',
-    borderImage: 'url(./images/border.png) 10 fill repeat',
-    borderRadius: '4px',
-    backgroundImage: 'url(./images/asfalt.png)'
+    border: '2px solid white',
+    borderRadius: '5px',
+    padding: '1px'
   };
 };
 
-var lineStyle = function lineStyle(_ref2) {
-  var tileSize = _ref2.tileSize;
-  return {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: '1'
-  };
+var lineStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  flex: '1'
 };
 
-var Pillow = function Pillow(props) {
-  var directions = props.directions,
-      tileSize = props.tileSize,
-      character = props.character;
+exports.default = Platform;
 
-
-  return _react2.default.createElement(
-    'div',
-    { style: style(props) },
-    directions.map(function (line, i) {
-      return _react2.default.createElement(
-        'div',
-        { style: lineStyle(props), key: 'line-' + i },
-        line.map(function (direction, j) {
-          return _react2.default.createElement(_PillowTile2.default, {
-            hasCharacter: i === character.line && j === character.column,
-            direction: direction,
-            tileSize: tileSize,
-            key: 'tile-' + i + '-' + j
-          });
-        })
-      );
-    })
-  );
-};
-
-exports.default = Pillow;
-
-},{"./PillowTile":219,"react":205}],219:[function(require,module,exports){
+},{"./PlatformTile":219,"react":205}],219:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23254,37 +23249,46 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var directions = {
-  up: '^',
-  down: 'v',
-  right: '>',
-  left: '<'
+var PlatformTile = function PlatformTile(props) {
+  return _react2.default.createElement('div', { style: style(props) });
 };
 
-var style = function style(_ref) {
-  var tileSize = _ref.tileSize,
-      hasCharacter = _ref.hasCharacter;
+var arrowRotation = {
+  up: -90,
+  down: 90,
+  right: 0,
+  left: 180
+};
+
+var arrowStyle = function arrowStyle(_ref) {
+  var direction = _ref.direction;
   return {
-    color: hasCharacter ? 'red' : 'yellow',
-    flex: '1 0 auto',
-    float: 'left',
-    textAlign: 'center'
+    background: 'url(./images/arrow.png) center center no-repeat',
+    mixBlendMode: 'overlay',
+    transform: 'rotate(' + arrowRotation[direction] + 'deg)',
+    transition: 'transform 200ms'
   };
 };
 
-var PillowTile = function PillowTile(props) {
-  var direction = props.direction,
-      hasCharacter = props.hasCharacter;
-
-
-  return _react2.default.createElement(
-    'div',
-    { style: style(props) },
-    hasCharacter ? 'x' : directions[direction]
-  );
+var charStyle = function charStyle(_ref2) {
+  var character = _ref2.character;
+  return {
+    background: 'url(./images/car-' + character.direction + '.png) center center no-repeat'
+  };
 };
 
-exports.default = PillowTile;
+var style = function style(_ref3) {
+  var hasCharacter = _ref3.hasCharacter,
+      direction = _ref3.direction,
+      character = _ref3.character;
+  return Object.assign({
+    flex: '1 0 auto',
+    float: 'left',
+    textAlign: 'center'
+  }, hasCharacter ? charStyle({ character: character }) : arrowStyle({ direction: direction }));
+};
+
+exports.default = PlatformTile;
 
 },{"react":205}],220:[function(require,module,exports){
 "use strict";
@@ -23295,7 +23299,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   height: 18,
   width: 18,
-  tileSize: 33
+  tileSize: 35
 };
 
 },{}],221:[function(require,module,exports){
@@ -23363,7 +23367,7 @@ var character = function character(state, _ref5) {
       direction = _ref5.direction;
 
   if (type === 'MOVE_CHAR' && characterTransitions[direction]) {
-    return Object.assign({}, state, characterTransitions[direction](state));
+    return Object.assign({}, state, characterTransitions[direction](state), { direction: direction });
   }
 
   return state;
@@ -23388,7 +23392,8 @@ character.canMoveTo = function (_ref6, _ref7) {
 
 character.initialState = {
   line: 0,
-  column: 0
+  column: 0,
+  direction: 'down'
 };
 
 exports.default = character;
@@ -23406,9 +23411,9 @@ var _character = require('./character');
 
 var _character2 = _interopRequireDefault(_character);
 
-var _pillow = require('./pillow');
+var _platform = require('./platform');
 
-var _pillow2 = _interopRequireDefault(_pillow);
+var _platform2 = _interopRequireDefault(_platform);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23421,9 +23426,9 @@ var rootReducer = function rootReducer(state, _ref) {
 
     if (_character2.default.canMoveTo(state.character, { direction: direction })) {
       newState.character = (0, _character2.default)(state.character, { type: type, direction: direction });
-      newState.pillow = (0, _pillow2.default)(state.pillow, {
-        type: 'MOVE_PILLOW',
-        direction: state.pillow.directions[newState.character.line][newState.character.column]
+      newState.platform = (0, _platform2.default)(state.platform, {
+        type: 'MOVE_PLATFORM',
+        direction: state.platform.directions[newState.character.line][newState.character.column]
       });
 
       return newState;
@@ -23434,13 +23439,13 @@ var rootReducer = function rootReducer(state, _ref) {
 
   return {
     character: _character2.default.initialState,
-    pillow: _pillow2.default.initialState
+    platform: _platform2.default.initialState
   };
 };
 
 exports.default = rootReducer;
 
-},{"./character":222,"./pillow":224,"redux":211}],224:[function(require,module,exports){
+},{"./character":222,"./platform":224,"redux":211}],224:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23472,7 +23477,7 @@ var getRandomDirections = function getRandomDirections() {
   });
 };
 
-var pillowTransitions = {
+var platformTransitions = {
   up: {
     cond: function cond(_ref) {
       var line = _ref.line;
@@ -23515,15 +23520,15 @@ var pillowTransitions = {
   }
 };
 
-var pillow = function pillow(state, _ref9) {
+var platform = function platform(state, _ref9) {
   var type = _ref9.type,
       direction = _ref9.direction;
 
-  if (type === 'MOVE_PILLOW') {
+  if (type === 'MOVE_PLATFORM') {
     var newState = Object.assign({}, state);
 
-    if (pillowTransitions[direction] && pillowTransitions[direction].cond(state)) {
-      Object.assign(newState, pillowTransitions[direction].trans(state));
+    if (platformTransitions[direction] && platformTransitions[direction].cond(state)) {
+      Object.assign(newState, platformTransitions[direction].trans(state));
     }
 
     newState.directions = getRandomDirections();
@@ -23534,12 +23539,12 @@ var pillow = function pillow(state, _ref9) {
   return state;
 };
 
-pillow.initialState = {
+platform.initialState = {
   line: 1,
   column: 1,
   directions: getRandomDirections()
 };
 
-exports.default = pillow;
+exports.default = platform;
 
 },{"../config":220,"lodash.range":26}]},{},[221]);

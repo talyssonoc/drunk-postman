@@ -9,7 +9,8 @@ const character = (state, { type, direction }) => {
   if(type === 'MOVE_CHAR' && characterTransitions[direction]) {
     return Object.assign(
       {}, state,
-      characterTransitions[direction](state)
+      characterTransitions[direction](state),
+      { direction }
     );
   }
 
@@ -31,7 +32,8 @@ character.canMoveTo = ({ line, column }, { direction }) => {
 
 character.initialState  = {
   line: 0,
-  column: 0
+  column: 0,
+  direction: 'down'
 };
 
 export default character;
