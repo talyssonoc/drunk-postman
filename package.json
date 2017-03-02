@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "browserify src/index.js -o build/bundle.js",
-    "watch": "watchify src/index.js -o build/bundle.js",
+    "build": "browserify -d src/index.js -o build/bundle.js",
+    "watch": "watchify -d src/index.js -o build/bundle.js",
     "lint": "eslint src/**/*.js"
   },
   "browserify": {

@@ -21,6 +21,7 @@ class Game extends React.Component {
       <Board
         height={this.props.height}
         width={this.props.width}
+        tileSize={this.props.tileSize}
       />
     );
   }

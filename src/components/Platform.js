@@ -3,7 +3,10 @@ import React from 'react';
 import PlatformTile from './PlatformTile';
 
 const Platform = (props) => {
-  const { directions, character } = props;
+  const {
+    character,
+    platform: { directions }
+  } = props;
 
   return (
     <div style={style(props)}>
@@ -34,7 +37,7 @@ const Platform = (props) => {
   );
 };
 
-const style = ({ tileSize, line, column }) => ({
+const style = ({ tileSize, platform: { line, column }}) => ({
   position: 'absolute',
   top: `${tileSize * (line - 1)}px`,
   left: `${tileSize * (column - 1)}px`,

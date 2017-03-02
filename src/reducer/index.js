@@ -1,27 +1,29 @@
 import character from './character';
 import platform from './platform';
+import stage from './stage';
 
-const rootReducer = (state, { type, direction }) => {
-  if(type === 'MOVE_CHAR') {
-    const newState = {};
+const initialState = {
+  character: character.initialState,
+  platform: platform.initialState,
+  stage: stage.initialState
+};
 
-    if(character.canMoveTo(state.character, { direction })) {
-      newState.character = character(state.character, { type, direction });
-      newState.platform = platform(state.platform, {
-        type: 'MOVE_PLATFORM',
-        direction: state.platform.directions[newState.character.line][newState.character.column]
-      });
+const rootReducer = (state = initialState, { type, direction }) => {
+  if(type === 'MOVE_CHAR'
+    && character.canMoveTo(state.character, { direction })
+  ) {
+    const newState = Object.assign({}, state);
 
-      return newState;
-    }
+    newState.character = character(state.character, { type, direction });
+    newState.platform = platform(state.platform, {
+      type: 'MOVE_PLATFORM',
+      direction: state.platform.directions[newState.character.line][newState.character.column]
+    });
 
-    return state;
+    return newState;
   }
 
-  return {
-    character: character.initialState,
-    platform: platform.initialState
-  };
+  return state;
 };
 
 export default rootReducer;
