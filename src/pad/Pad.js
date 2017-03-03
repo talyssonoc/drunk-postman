@@ -1,11 +1,11 @@
 import React from 'react';
 
-import PlatformTile from './PlatformTile';
+import PadTile from './PadTile';
 
-const Platform = (props) => {
+const Pad = (props) => {
   const {
     character,
-    platform: { directions }
+    pad: { directions }
   } = props;
 
   return (
@@ -18,7 +18,7 @@ const Platform = (props) => {
           >
             {
               line.map((direction, j) =>
-                <PlatformTile
+                <PadTile
                   character={character}
                   direction={direction}
                   hasCharacter={
@@ -37,7 +37,7 @@ const Platform = (props) => {
   );
 };
 
-const style = ({ tileSize, platform: { line, column }}) => ({
+const style = ({ tileSize, pad: { line, column }}) => ({
   position: 'absolute',
   top: `${tileSize * (line - 1)}px`,
   left: `${tileSize * (column - 1)}px`,
@@ -57,4 +57,4 @@ const lineStyle = {
   flex: '1'
 };
 
-export default Platform;
+export default Pad;

@@ -1,24 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Platform from './Platform';
-import Goal from './Goal';
+import { Pad } from '../pad';
+// import Goal from './Goal';
 
 const Board = (props) => {
   const {
-    character, directions,
-    stage, platform, tileSize
+    character, stage,
+    pad, tileSize
   } = props;
 
   return (
     <div style={style(props)}>
-      <Platform
+      <Pad
         character={character}
-        platform={platform}
+        pad={pad}
         tileSize={tileSize}
       />
 
-      {
+      {/*
         stage.goals.map((goal, i) =>
           <Goal
             goal={goal}
@@ -26,7 +26,7 @@ const Board = (props) => {
             tileSize={tileSize}
           />
         )
-      }
+      */}
     </div>
   );
 };
@@ -41,7 +41,7 @@ const style = ({ height, width, tileSize }) => ({
 });
 
 export default connect(
-  ({ platform, stage, character }) => ({
-    platform, stage, character
+  ({ pad, stage, character }) => ({
+    pad, stage, character
   })
 )(Board);

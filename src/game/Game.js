@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Board from './Board';
 
-const directions = {
+const KEYCODES = {
   37: 'left',
   38: 'up',
   39: 'right',
@@ -12,7 +12,7 @@ const directions = {
 class Game extends React.Component {
   componentDidMount() {
     document.addEventListener('keyup', ({ keyCode }) => {
-      this.props.move(directions[keyCode]);
+      this.props.move(KEYCODES[keyCode]);
     });
   }
 
@@ -20,8 +20,8 @@ class Game extends React.Component {
     return (
       <Board
         height={this.props.height}
-        width={this.props.width}
         tileSize={this.props.tileSize}
+        width={this.props.width}
       />
     );
   }
